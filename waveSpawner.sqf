@@ -23,8 +23,8 @@ while {count _waves > _wave_index} do {
         continue;
     };
 
-    // _vehicle_group addWaypoint [markerPos _target, 0, 0];
-    // _infantry_group addWaypoint [markerPos _target, 0, 0];
+    _vehicle_group addWaypoint [markerPos _target, 0, 0];
+    _infantry_group addWaypoint [markerPos _target, 0, 0];
     // [[small_squads, big_squads]; n]
     _current_wave = _waves select _wave_index;
     // squads
@@ -42,14 +42,13 @@ while {count _waves > _wave_index} do {
                     markerPos _marker,
                     [],
                     (markerSize _marker) select 0,
-                    "NONE",
+                    "NONE"
                 ];
-                if (_v isKindOf "AllVehicles") then {
+                if (_v isKindOf "Man") then {
+                    private _unit = _infantry_group createUnit _args;                    
+                } else {
                     private _unit = createVehicle _args;
                     _vehicle_group createVehicleCrew _unit;
-                } else {
-                    private _unit = _infantry_group createUnit _args;
-
                 };
             } forEach (_squads select _s);
             
