@@ -8,24 +8,19 @@ params [
 
 private _wave_index = 0;
 
-private _vehicle_group = createGroup [opfor, false];
-private _infantry_group = createGroup [opfor, false];
 
-
-private _infantry_waypoint = _infantry_group addWaypoint [markerPos _target, 0];
-private _vehicle_waypoint = _vehicle_group addWaypoint [markerPos _target, 0];
-
-_infantry_waypoint waypointType "SAD";
-_vehicle_waypoint waypointType "SAD";
-
-
-
-hint str _infantry_group;
-
+private _groups = [];
 
 
 while {count _waves > _wave_index} do {
-    private _count = ({alive _x} count units _infantry_group) +  ({alive _x} count units _vehicle_group);
+    private _count = 0;
+    
+    {
+        _count = _count + ({alive _x} count units _x);
+    
+        // Current result is saved in variable _x
+        
+    } forEach _groups;
     
 
     if (!(_count <= _min)) then {
@@ -39,6 +34,7 @@ while {count _waves > _wave_index} do {
     for "_s" from 0 to (count _squads) - 1 do {
         for "_i" from 1 to (_current_wave select _s) do {
             private _marker = selectRandom _markers;
+            private _group = createGroup opfor;
             {
                 private _v = _x;
                 if (typeName _v == "ARRAY") then {
@@ -60,7 +56,10 @@ while {count _waves > _wave_index} do {
  
                 };
             } forEach (_squads select _s);
-            
+
+           private _waypoint = _group addWaypoint [markerPos _target, 0];
+           _waypoint setWaypointType "SAD";
+           _groups pushBack _group;
         };
     };
 
