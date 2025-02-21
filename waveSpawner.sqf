@@ -11,6 +11,15 @@ private _wave_index = 0;
 private _vehicle_group = createGroup [opfor, false];
 private _infantry_group = createGroup [opfor, false];
 
+
+private _infantry_waypoint = _infantry_group addWaypoint [markerPos _target, 0];
+private _vehicle_waypoint = _vehicle_group addWaypoint [markerPos _target, 0];
+
+_infantry_waypoint waypointType "SAD";
+_vehicle_waypoint waypointType "SAD";
+
+
+
 hint str _infantry_group;
 
 
@@ -18,13 +27,12 @@ hint str _infantry_group;
 while {count _waves > _wave_index} do {
     private _count = ({alive _x} count units _infantry_group) +  ({alive _x} count units _vehicle_group);
     
+
     if (!(_count <= _min)) then {
         sleep 20;
         continue;
     };
 
-    _vehicle_group addWaypoint [markerPos _target, 0, 0];
-    _infantry_group addWaypoint [markerPos _target, 0, 0];
     // [[small_squads, big_squads]; n]
     _current_wave = _waves select _wave_index;
     // squads
@@ -49,6 +57,7 @@ while {count _waves > _wave_index} do {
                 } else {
                     private _unit = createVehicle _args;
                     _vehicle_group createVehicleCrew _unit;
+ 
                 };
             } forEach (_squads select _s);
             
