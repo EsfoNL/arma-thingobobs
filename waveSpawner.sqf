@@ -49,11 +49,10 @@ while {count _waves > _wave_index} do {
                     "NONE"
                 ];
                 if (_v isKindOf "Man") then {
-                    private _unit = _infantry_group createUnit _args;                    
+                    private _unit = _group createUnit _args;                    
                 } else {
                     private _unit = createVehicle _args;
-                    _vehicle_group createVehicleCrew _unit;
- 
+                    _group createVehicleCrew _unit;
                 };
             } forEach (_squads select _s);
 
